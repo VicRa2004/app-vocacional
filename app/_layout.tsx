@@ -1,11 +1,19 @@
 import { Stack } from "expo-router";
+import { Text, View } from "react-native";
 
 export default function RootLayout() {
   return (
-    <Stack>
-      <Stack.Screen name="index" options={{ title: "Home" }} />
-      <Stack.Screen name="login" options={{ title: "Login" }} />
-      <Stack.Screen name="tetris" options={{ title: "Tetris" }} />
-    </Stack>
+    <View style={{ flex: 1 }}>
+      <Stack
+        screenOptions={{
+          headerLeft: () => (
+            <Text style={{ fontSize: 20, color: "", fontWeight: 500 }}>
+              App Vocacional
+            </Text>
+          ),
+          headerTitle: () => null,
+        }}
+      />
+    </View>
   );
 }

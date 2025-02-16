@@ -1,3 +1,4 @@
+import { Stack } from "expo-router";
 import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 
@@ -357,6 +358,14 @@ const Tetris = () => {
 
   return (
     <View style={styles.container}>
+      <Stack.Screen
+        options={{
+          headerLeft: () => null,
+          headerTitle: "Tetris",
+          // header: () => null,
+        }}
+      />
+
       <Text style={styles.score}>Score: {score}</Text>
       {gameOver && <Text style={styles.gameOverText}>Game Over</Text>}
       <View style={styles.board}>
