@@ -1,27 +1,44 @@
-import { ConfigIcon, HomeIcon } from "@/components/ui/Icons";
-import { Tabs } from "expo-router";
+import { Tabs } from 'expo-router';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useTheme } from 'react-native-paper';
 
-export default function TabsLayout() {
+export default function TabLayout() {
+  const { colors } = useTheme();
+
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarStyle: { backgroundColor: "#000" },
-        tabBarActiveTintColor: "purple",
+        tabBarActiveTintColor: colors.primary,
+        tabBarInactiveTintColor: 'gray',
       }}
     >
       <Tabs.Screen
         name="index"
         options={{
-          title: "Home",
-          tabBarIcon: ({ color }) => <HomeIcon color={color} />,
+          title: 'Inicio',
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="apps" size={24} color={color} />
+          ),
         }}
       />
       <Tabs.Screen
         name="config"
         options={{
-          title: "Configuración",
-          tabBarIcon: ({ color }) => <ConfigIcon color={color} />,
+          title: 'Configuración',
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="account-cog" size={24} color={color} />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="profile"
+        options={{
+          title: 'Perfil',
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="account" size={24} color={color} />
+          ),
         }}
       />
     </Tabs>

@@ -1,21 +1,25 @@
 import { Stack } from "expo-router";
 import React, { useState } from "react";
 import { View, StyleSheet } from "react-native";
-import { TextInput, Button, Text } from "react-native-paper";
+import { TextInput, Button, Text, ActivityIndicator } from "react-native-paper";
+import useAuth from "@/hooks/use-auth";
 
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const { 
+    authState: { isLoading, error: authError },
+    authActions: { login, clearError }
+  } = useAuth();
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (!email || !password) {
-      setError("Por favor, ingresa tu correo y contraseña");
+      clearError();
+      // Podrías manejar este error de validación localmente
+      // o pasarlo al store si prefieres centralizarlo
       return;
     }
-    setError("");
-    // Aquí puedes agregar la lógica de autenticación
-    console.log("Email:", email, "Password:", password);
+    await login(email, password);
   };
 
   return (
@@ -28,6 +32,7 @@ const LoginScreen = () => {
       />
 
       <Text style={styles.title}>Iniciar Sesión</Text>
+      
       <TextInput
         label="Correo Electrónico"
         value={email}
@@ -35,22 +40,41 @@ const LoginScreen = () => {
         keyboardType="email-address"
         autoCapitalize="none"
         style={styles.input}
+        disabled={isLoading}
       />
+      
       <TextInput
         label="Contraseña"
         value={password}
         onChangeText={setPassword}
         secureTextEntry
         style={styles.input}
+        disabled={isLoading}
       />
-      {error ? <Text style={styles.error}>{error}</Text> : null}
-      <Button mode="contained" onPress={handleLogin} style={styles.button}>
-        Iniciar Sesión
+      
+      {authError ? (
+        <Text style={styles.error} onPress={clearError}>
+          {authError}
+        </Text>
+      ) : null}
+      
+      <Button 
+        mode="contained" 
+        onPress={handleLogin} 
+        style={styles.button}
+        disabled={isLoading}
+      >
+        {isLoading ? (
+          <ActivityIndicator color="#fff" />
+        ) : (
+          "Iniciar Sesión"
+        )}
       </Button>
     </View>
   );
 };
 
+// Los estilos se mantienen igual
 const styles = StyleSheet.create({
   container: {
     flex: 1,
