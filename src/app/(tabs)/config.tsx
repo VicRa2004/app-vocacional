@@ -16,12 +16,16 @@ export default function Config() {
 
       <Button onPress={() => router.navigate('/(games)/gato')}>Prueba Gato</Button>
 
+      <Button onPress={() => router.navigate('/(games)/snake')}>Prueba Serpiente</Button>
+
+      <Button onPress={() => router.navigate('/(games)/trivia')}>Prueba Trivia</Button>
+
+      <Button onPress={() => router.navigate('/(games)/memory')}>Prueba Memoria</Button>
+
+      <Button onPress={() => router.navigate('/(games)/preguntas')}>Prueba Preguntas</Button>
+
     </View>
   );
 }
 
-
-/**
- * Estoy usando React Native y expo para hacer una app móvil que tiene algunos juegos, puedes por favor darme el código para un juego 
- */
 

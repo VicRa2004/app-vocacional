@@ -17,7 +17,7 @@ export default function RootLayout() {
     <Stack
     screenOptions={{
       headerShown: true,
-      title: 'Sistema de Eventos',
+      title: 'App Vocacional',
       headerStyle: {
         // Poner un color morado claro
         backgroundColor: '#6a1b9a', 
