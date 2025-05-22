@@ -1,6 +1,5 @@
 // components/ListaPreguntas.tsx
 import React from 'react';
-import { Text } from 'react-native';
 import PreguntaItem from './PreguntaItem';
 import { Pregunta } from '@/types/carrera';
 import { usePreguntasStore } from '@/store/preguntas-store';
@@ -14,6 +13,7 @@ const ListaPreguntas: React.FC<Props> = ({ preguntas }) => {
 
   const onChangeResultado = (index: number, resultado: number) => {
     const pregunta = preguntas[index];
+    console.log(pregunta, resultado);
     responderPregunta({ ...pregunta, resultado });
   };
 

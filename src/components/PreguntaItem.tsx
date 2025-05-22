@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Pregunta } from '@/types/carrera';
+import { usePreguntasStore } from '@/store/preguntas-store';
 
 type Props = {
   pregunta: Pregunta;
@@ -17,6 +18,10 @@ const opciones = [
 ];
 
 const PreguntaItem: React.FC<Props> = ({ pregunta, index, onChangeResultado }) => {
+  const resultadoActual = usePreguntasStore((state) =>
+    state.resultados.find((p) => p.nombre === pregunta.nombre)?.resultado ?? 0
+  );
+
   return (
     <View style={styles.card}>
       <Text style={styles.pregunta}>{pregunta.nombre}</Text>
@@ -26,11 +31,18 @@ const PreguntaItem: React.FC<Props> = ({ pregunta, index, onChangeResultado }) =
             key={op.valor}
             style={[
               styles.opcion,
-              pregunta.resultado === op.valor && styles.opcionSeleccionada,
+              resultadoActual === op.valor && styles.opcionSeleccionada,
             ]}
             onPress={() => onChangeResultado(index, op.valor)}
           >
-            <Text style={styles.opcionTexto}>{op.label}</Text>
+            <Text
+              style={[
+                styles.opcionTexto,
+                resultadoActual === op.valor && { color: '#fff' },
+              ]}
+            >
+              {op.label}
+            </Text>
           </TouchableOpacity>
         ))}
       </View>

@@ -23,7 +23,7 @@ const VistaPreguntas: React.FC = () => {
 
     console.log('Respuestas:', resultados);
     Alert.alert('¡Listo!', 'Sigue con los juegos');
-    router.replace('/(games)/gato');
+    router.replace('/(games)/snake');
   };
 
   return (
