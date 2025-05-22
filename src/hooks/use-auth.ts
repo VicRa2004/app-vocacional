@@ -1,6 +1,5 @@
-// hooks/useAuth.ts
-import { useEffect } from 'react';
 import useAuthStore from '@/store/auth-store';
+import { useEffect } from 'react';
 
 const useAuth = () => {
   const {
@@ -15,18 +14,14 @@ const useAuth = () => {
     checkAuth
   } = useAuthStore();
 
-  // Efecto para verificar autenticación al montar el componente
+  // Verificar autenticación al iniciar
   useEffect(() => {
-    const verifyAuth = async () => {
-      if (token) {
-        await checkAuth();
-      }
-    };
-    verifyAuth();
-  }, [token, checkAuth]);
+    if (token) {
+      checkAuth();
+    }
+  }, []);
 
   return {
-    // Estado
     authState: {
       isAuthenticated,
       isLoading,
@@ -34,23 +29,24 @@ const useAuth = () => {
       user,
       token
     },
-    
-    // Acciones
     authActions: {
       login: async (email: string, password: string) => {
-        await login(email, password);
+        try {
+          await login(email, password);
+          // Forzar re-renderizado después de login exitoso
+          return true;
+        } catch (error) {
+          console.error('Login error:', error);
+          throw error;
+        }
       },
-      logout: () => {
+      logout: async () => {
         logout();
+        // Forzar re-renderizado después de logout
+        return true;
       },
-      clearError: () => {
-        clearError();
-      }
-    },
-    
-    // Helpers
-    //isAdmin: user?.role === 'admin', // Opcional: si tienes roles
-    isCurrentUser: (userId: string) => user?.id === userId
+      clearError
+    }
   };
 };
 

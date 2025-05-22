@@ -1,35 +1,32 @@
-import { Stack } from "expo-router";
-import { View, ActivityIndicator } from "react-native";
-import useAuth from "../hooks/use-auth";
+// app/_layout.tsx
+import { Stack } from 'expo-router';
 
 export default function RootLayout() {
-  const { authState: { isAuthenticated, isLoading } } = useAuth();
-
-  if (isLoading) {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator size="large" />
-      </View>
-    );
-  }
-
   return (
     <Stack
-    screenOptions={{
-      headerShown: true,
-      title: 'App Vocacional',
-      headerStyle: {
-        // Poner un color morado claro
-        backgroundColor: '#6a1b9a', 
-      },
-      headerTintColor: '#fff',
-    }}
+      screenOptions={{
+        headerShown: true,
+        title: 'CareerCraft',
+        headerStyle: { backgroundColor: '#6a1b9a' },
+        headerTintColor: '#fff',
+      }}
     >
-      {!isAuthenticated ? (
-        <Stack.Screen name="(auth)/index" options={{ headerShown: true }} />
-      ) : (
-        <Stack.Screen name="(tabs)" options={{ headerShown: true }} />
-      )}
+      {/* Pantalla index vacía - solo para estructura */}
+      <Stack.Screen 
+        name="index" 
+        options={{ headerShown: false }}
+      />
+      
+      <Stack.Screen
+        name="login"
+        options={{ title: 'Iniciar Sesión' }}
+      />
+      
+      <Stack.Screen 
+        name="(tabs)" 
+        options={{ headerShown: true }} 
+      />
     </Stack>
   );
 }
+

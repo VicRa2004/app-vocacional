@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Text, ScrollView, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import PreguntaItem from '@/components/PreguntaItem';
 import { usePreguntasStore } from '@/store/preguntas-store';
+import { Carrera } from '@/types/carrera';
 import { useNavigation } from '@react-navigation/native';
 
 const VistaPreguntas: React.FC = () => {
@@ -9,41 +10,49 @@ const VistaPreguntas: React.FC = () => {
 
   const {
     preguntas,
+    carreras,
     responderPregunta,
     agregarPregunta,
-    getCarreras,
+    setCarreras,
     obtenerResultados,
   } = usePreguntasStore();
 
-  useEffect(() => {
+  // Si aún no se han cargado preguntas, lo hacemos (solo una vez)
+  React.useEffect(() => {
     if (preguntas.length === 0) {
-      const carreras = getCarreras(); // ✅ ya están seguras
+      const carrerasEjemplo: Carrera[] = [
+        { id: 1, nombre: 'Ingeniería' },
+        { id: 2, nombre: 'Psicología' },
+        { id: 3, nombre: 'Diseño Gráfico' },
+      ];
+
+      setCarreras(carrerasEjemplo);
 
       const nuevas = [
         {
           nombre: '¿Te gusta resolver problemas lógicos?',
           resultado: 0,
-          tiposDeCarrera: [carreras[0]], // Ingeniería
+          tiposDeCarrera: [carrerasEjemplo[0]],
         },
         {
           nombre: '¿Te interesa entender el comportamiento humano?',
           resultado: 0,
-          tiposDeCarrera: [carreras[1]], // Psicología
+          tiposDeCarrera: [carrerasEjemplo[1]],
         },
         {
           nombre: '¿Disfrutas crear cosas visuales?',
           resultado: 0,
-          tiposDeCarrera: [carreras[2]], // Diseño
+          tiposDeCarrera: [carrerasEjemplo[2]],
         },
         {
-          nombre: '¿Te interesa cómo funcionan las empresas?',
+          nombre: '¿Te gusta programar y construir cosas con código?',
           resultado: 0,
-          tiposDeCarrera: [carreras[3]], // Administración
+          tiposDeCarrera: [carrerasEjemplo[0]],
         },
         {
-          nombre: '¿Te gustaría ayudar a personas a sanar?',
+          nombre: '¿Te gustaría ayudar a personas a superar dificultades?',
           resultado: 0,
-          tiposDeCarrera: [carreras[4]], // Medicina
+          tiposDeCarrera: [carrerasEjemplo[1]],
         },
       ];
 
@@ -63,10 +72,12 @@ const VistaPreguntas: React.FC = () => {
     }
 
     const respuestas = obtenerResultados();
-    console.log('Respuestas:', JSON.stringify(respuestas));
+    console.log('Respuestas:', respuestas);
 
+    // Aquí podrías navegar a la vista de juegos o resultados
     Alert.alert('¡Listo!', 'Ahora puedes pasar a los juegos o ver tu resultado.');
-    // navigation.navigate('VistaJuegos');
+
+    // navigation.navigate('VistaJuegos'); // Ejemplo
   };
 
   return (

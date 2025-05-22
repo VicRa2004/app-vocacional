@@ -1,18 +1,22 @@
-// Tetris.tsx
-
-import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Dimensions,
+} from "react-native";
 
 // Dimensiones del tablero y tamaño de cada celda
 const BOARD_WIDTH = 10;
 const BOARD_HEIGHT = 18;
-const CELL_SIZE = Math.floor(Dimensions.get('window').width / BOARD_WIDTH) - 10;
+const CELL_SIZE = Math.floor(Dimensions.get("window").width / BOARD_WIDTH) - 10;
 
 // Velocidad del juego (en milisegundos)
 const GAME_SPEED = 500;
 
 // Definición de las piezas (tetrominós) con sus rotaciones y colores
-type TetrominoType = 'I' | 'O' | 'T' | 'S' | 'Z' | 'J' | 'L';
+type TetrominoType = "I" | "O" | "T" | "S" | "Z" | "J" | "L";
 
 interface Tetromino {
   rotations: number[][][];
@@ -35,7 +39,7 @@ const TETROMINOES: Record<TetrominoType, Tetromino> = {
         [3, 0],
       ],
     ],
-    color: '#00BCD4',
+    color: "#00BCD4",
   },
   O: {
     rotations: [
@@ -46,7 +50,7 @@ const TETROMINOES: Record<TetrominoType, Tetromino> = {
         [1, 1],
       ],
     ],
-    color: '#FFEB3B',
+    color: "#FFEB3B",
   },
   T: {
     rotations: [
@@ -75,7 +79,7 @@ const TETROMINOES: Record<TetrominoType, Tetromino> = {
         [1, 2],
       ],
     ],
-    color: '#9C27B0',
+    color: "#9C27B0",
   },
   S: {
     rotations: [
@@ -92,7 +96,7 @@ const TETROMINOES: Record<TetrominoType, Tetromino> = {
         [2, 2],
       ],
     ],
-    color: '#4CAF50',
+    color: "#4CAF50",
   },
   Z: {
     rotations: [
@@ -109,7 +113,7 @@ const TETROMINOES: Record<TetrominoType, Tetromino> = {
         [1, 2],
       ],
     ],
-    color: '#F44336',
+    color: "#F44336",
   },
   J: {
     rotations: [
@@ -138,7 +142,7 @@ const TETROMINOES: Record<TetrominoType, Tetromino> = {
         [1, 2],
       ],
     ],
-    color: '#2196F3',
+    color: "#2196F3",
   },
   L: {
     rotations: [
@@ -167,7 +171,7 @@ const TETROMINOES: Record<TetrominoType, Tetromino> = {
         [1, 2],
       ],
     ],
-    color: '#FF9800',
+    color: "#FF9800",
   },
 };
 
@@ -249,7 +253,9 @@ const mergePieceToBoard = (piece: Piece, board: Cell[][]): Cell[][] => {
 };
 
 // Limpia las líneas completas
-const clearLines = (board: Cell[][]): { board: Cell[][]; linesCleared: number } => {
+const clearLines = (
+  board: Cell[][]
+): { board: Cell[][]; linesCleared: number } => {
   let linesCleared = 0;
   const newBoard = board.filter((row) => {
     if (row.every((cell) => cell !== null)) {
@@ -269,6 +275,11 @@ const Tetris: React.FC = () => {
   const [currentPiece, setCurrentPiece] = useState<Piece>(createNewPiece());
   const [gameOver, setGameOver] = useState<boolean>(false);
   const [score, setScore] = useState<number>(0);
+
+  const handleGameOver = () => {
+    console.log("Juego terminado. Puntuación final:", score);
+    alert("tu puntuacion fue de " + score);
+  };
 
   useEffect(() => {
     if (gameOver) return;
@@ -291,6 +302,7 @@ const Tetris: React.FC = () => {
       const newPiece = createNewPiece();
       if (!isValidPosition(newPiece, clearedBoard)) {
         setGameOver(true);
+        handleGameOver();
       } else {
         setCurrentPiece(newPiece);
       }
@@ -303,151 +315,175 @@ const Tetris: React.FC = () => {
     }
   };
 
-// Continuación del componente Tetris en TypeScript
-
-const movePieceRight = () => {
-  if (isValidPosition(currentPiece, board, 1, 0)) {
-    setCurrentPiece({ ...currentPiece, x: currentPiece.x + 1 });
-  }
-};
-
-const rotatePiece = () => {
-  const newRotation = (currentPiece.rotation + 1) % TETROMINOES[currentPiece.type].rotations.length;
-  if (isValidPosition(currentPiece, board, 0, 0, newRotation)) {
-    setCurrentPiece({ ...currentPiece, rotation: newRotation });
-  }
-};
-
-const dropPiece = () => {
-  let newY = currentPiece.y;
-  while (isValidPosition(currentPiece, board, 0, newY - currentPiece.y + 1)) {
-    newY++;
-  }
-  setCurrentPiece({ ...currentPiece, y: newY });
-};
-
-const restartGame = () => {
-  setBoard(createEmptyBoard());
-  setCurrentPiece(createNewPiece());
-  setGameOver(false);
-  setScore(0);
-};
-
-// Render del tablero
-const renderBoard = () => {
-  const displayBoard: Cell[][] = board.map((row) => [...row]);
-  const blocks = getPieceBlocks(currentPiece);
-  blocks.forEach(({ x, y }) => {
-    if (y >= 0 && y < BOARD_HEIGHT && x >= 0 && x < BOARD_WIDTH) {
-      displayBoard[y][x] = TETROMINOES[currentPiece.type].color;
+  const movePieceRight = () => {
+    if (isValidPosition(currentPiece, board, 1, 0)) {
+      setCurrentPiece({ ...currentPiece, x: currentPiece.x + 1 });
     }
-  });
+  };
 
-  return displayBoard.map((row, rowIndex) => (
-    <View key={rowIndex} style={{ flexDirection: 'row' }}>
-      {row.map((cell, colIndex) => (
-        <View
-          key={colIndex}
-          style={{
-            width: CELL_SIZE,
-            height: CELL_SIZE,
-            backgroundColor: cell ? cell : '#ffffff',
-            borderWidth: 0.5,
-            borderColor: '#ccc',
-          }}
-        />
-      ))}
-    </View>
-  ));
-};
+  const rotatePiece = () => {
+    const newRotation =
+      (currentPiece.rotation + 1) %
+      TETROMINOES[currentPiece.type].rotations.length;
+    if (isValidPosition(currentPiece, board, 0, 0, newRotation)) {
+      setCurrentPiece({ ...currentPiece, rotation: newRotation });
+    }
+  };
 
-return (
-  <View style={styles.container}>
-    <Text style={styles.title}>Tetris</Text>
-    <Text style={styles.score}>Puntaje: {score}</Text>
-    <View style={styles.board}>{renderBoard()}</View>
-    {gameOver && <Text style={styles.gameOver}>¡Juego Terminado!</Text>}
-    <View style={styles.controls}>
-      <TouchableOpacity style={styles.button} onPress={movePieceLeft}>
-        <Text style={styles.buttonText}>←</Text>
+  const dropPiece = () => {
+    let newY = currentPiece.y;
+    while (isValidPosition(currentPiece, board, 0, newY - currentPiece.y + 1)) {
+      newY++;
+    }
+    setCurrentPiece({ ...currentPiece, y: newY });
+  };
+
+  const restartGame = () => {
+    setBoard(createEmptyBoard());
+    setCurrentPiece(createNewPiece());
+    setGameOver(false);
+    setScore(0);
+  };
+
+  // Render del tablero
+  const renderBoard = () => {
+    const displayBoard: Cell[][] = board.map((row) => [...row]);
+    const blocks = getPieceBlocks(currentPiece);
+    blocks.forEach(({ x, y }) => {
+      if (y >= 0 && y < BOARD_HEIGHT && x >= 0 && x < BOARD_WIDTH) {
+        displayBoard[y][x] = TETROMINOES[currentPiece.type].color;
+      }
+    });
+
+    return displayBoard.map((row, rowIndex) => (
+      <View key={rowIndex} style={styles.row}>
+        {row.map((cell, colIndex) => (
+          <View
+            key={colIndex}
+            style={[
+              styles.cell,
+              { backgroundColor: cell || "#eeeeee" },
+              cell && styles.filledCell,
+            ]}
+          />
+        ))}
+      </View>
+    ));
+  };
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>TETRIS</Text>
+      <Text style={styles.score}>Puntaje: {score}</Text>
+      <View style={styles.board}>{renderBoard()}</View>
+
+      {gameOver ? (
+        <Text style={styles.gameOver}>¡Juego terminado!</Text>
+      ) : (
+        <View style={styles.controls}>
+          <TouchableOpacity style={styles.button} onPress={movePieceLeft}>
+            <Text style={styles.buttonText}>◀️</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={rotatePiece}>
+            <Text style={styles.buttonText}>🔄</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={movePieceRight}>
+            <Text style={styles.buttonText}>▶️</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={dropPiece}>
+            <Text style={styles.buttonText}>⬇️</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+
+      {/**
+         * <TouchableOpacity style={styles.restartButton} onPress={restartGame}>
+        <Text style={styles.restartButtonText}>Reiniciar</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={rotatePiece}>
-        <Text style={styles.buttonText}>⟳</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={movePieceRight}>
-        <Text style={styles.buttonText}>→</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={dropPiece}>
-        <Text style={styles.buttonText}>↓</Text>
-      </TouchableOpacity>
+         */}
     </View>
-    {gameOver && (
-      <TouchableOpacity style={styles.restartButton} onPress={restartGame}>
-        <Text style={styles.restartText}>Reiniciar</Text>
-      </TouchableOpacity>
-    )}
-  </View>
-);
+  );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ffffff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 30,
+    backgroundColor: "#121212",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 20,
   },
   title: {
     fontSize: 32,
-    fontWeight: 'bold',
-    color: '#6a1b9a',
+    fontWeight: "bold",
+    color: "#FFFFFF",
     marginBottom: 10,
   },
   score: {
     fontSize: 18,
-    color: '#6a1b9a',
+    color: "#cccccc",
     marginBottom: 10,
   },
   board: {
-    borderWidth: 2,
-    borderColor: '#6a1b9a',
-    backgroundColor: '#ffffff',
-  },
-  controls: {
-    flexDirection: 'row',
-    marginTop: 20,
-    gap: 10,
-    flexWrap: 'wrap',
-    justifyContent: 'center'
-  },
-  button: {
-    backgroundColor: '#6a1b9a',
-    padding: 12,
-    borderRadius: 10,
-    margin: 5,
-  },
-  buttonText: {
-    color: '#ffffff',
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  gameOver: {
-    fontSize: 20,
-    color: 'red',
-    marginTop: 10,
-  },
-  restartButton: {
-    backgroundColor: '#6a1b9a',
-    marginTop: 15,
-    padding: 10,
+    backgroundColor: "#333333",
+    padding: 2,
+    borderWidth: 4,
+    borderColor: "#555",
     borderRadius: 8,
   },
-  restartText: {
-    color: '#fff',
-    fontWeight: 'bold',
+  row: {
+    flexDirection: "row",
+  },
+  cell: {
+    width: CELL_SIZE,
+    height: CELL_SIZE,
+    borderWidth: 1,
+    borderColor: "#222",
+    margin: 1,
+    borderRadius: 2,
+  },
+  filledCell: {
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+  controls: {
+    flexDirection: "row",
+    marginTop: 20,
+    gap: 10,
+    flexWrap: "wrap",
+    justifyContent: "center",
+  },
+  button: {
+    backgroundColor: "#555",
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    margin: 5,
+    borderRadius: 6,
+  },
+  buttonText: {
+    fontSize: 20,
+    color: "#FFF",
+  },
+  restartButton: {
+    backgroundColor: "#FF5722",
+    padding: 12,
+    borderRadius: 8,
+    marginTop: 20,
+  },
+  restartButtonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  gameOver: {
+    fontSize: 24,
+    color: "#F44336",
+    marginTop: 20,
+    fontWeight: "bold",
   },
 });
 
 export default Tetris;
- 

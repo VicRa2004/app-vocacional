@@ -1,16 +1,21 @@
 import React from "react";
-import { View } from "react-native";
-import { Text } from "react-native-paper";
+import { ScrollView, Text } from "react-native";
+import useAuth from "@/hooks/use-auth";
 
 const ProfileScreen = () => {
+  const {
+    authState: { user},
+  } = useAuth();
+
+  console.log(user);
 
   return (
-    <View>
-        <Text>Perfil</Text>
-    </View>
+    <ScrollView>
+      <Text>Profile</Text>
+      <Text>Name: {user?.name}</Text>
+      <Text>Email: {user?.email}</Text>
+    </ScrollView>
   );
 };
-
-
 
 export default ProfileScreen;
