@@ -44,8 +44,7 @@ const HomeScreen = () => {
 
       <View style={styles.footer}>
         {
-          /**
-           * <Link href="/games" asChild>
+           <Link href="/(games)/tetris" asChild>
           <Button 
             mode="contained" 
             style={styles.mainButton}
@@ -53,10 +52,10 @@ const HomeScreen = () => {
             labelStyle={styles.buttonLabel}
             theme={{ colors: { primary: 'white' } }}
           >
-            Comenzar Juego
+            Comenzar Test
           </Button>
         </Link>
-           */
+           
         }
 
         <Link href="/about" asChild>

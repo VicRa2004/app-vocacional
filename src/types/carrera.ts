@@ -9,3 +9,9 @@ export type Pregunta = {
   resultado: number;
   tiposDeCarrera: Carrera[];
 };
+
+export type Juego = {
+  nombre: string;
+  puntaje: number;
+  tiposDeCarrera: Carrera[];
+};

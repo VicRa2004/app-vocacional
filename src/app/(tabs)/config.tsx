@@ -22,8 +22,6 @@ export default function Config() {
 
       <Button onPress={() => router.navigate('/(games)/memory')}>Prueba Memoria</Button>
 
-      <Button onPress={() => router.navigate('/(games)/preguntas')}>Prueba Preguntas</Button>
-
     </View>
   );
 }

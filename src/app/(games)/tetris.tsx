@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, use } from "react";
 import {
   View,
   Text,
@@ -6,6 +6,9 @@ import {
   StyleSheet,
   Dimensions,
 } from "react-native";
+import {useJuegosStore} from '@/store/juegos-store';
+import {CARRERAS} from '@/config/carreras'
+import { router } from "expo-router";
 
 // Dimensiones del tablero y tamaño de cada celda
 const BOARD_WIDTH = 10;
@@ -276,9 +279,15 @@ const Tetris: React.FC = () => {
   const [gameOver, setGameOver] = useState<boolean>(false);
   const [score, setScore] = useState<number>(0);
 
+  const {agregarJuego} = useJuegosStore();
+
+
   const handleGameOver = () => {
-    console.log("Juego terminado. Puntuación final:", score);
+    agregarJuego('tetris', [CARRERAS[0], CARRERAS[4], CARRERAS[6]], score);
     alert("tu puntuacion fue de " + score);
+
+    // Redirigimos a preguntas 1
+    router.replace('/(preguntas)/preguntas-1');
   };
 
   useEffect(() => {
