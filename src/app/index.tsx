@@ -5,25 +5,10 @@ import { useUrl } from '@/hooks/use-url';
 import useAuthStore from '@/store/auth-store';
 
 export default function WelcomeScreen() {
-  const { setIpAddress, saveUrl, currentUrl } = useUrl();
+  const { currentUrl } = useUrl();
   const { isAuthenticated, isLoading } = useAuthStore();
 
   const handleConfigPress = () => {
-    console.log("se ecjecuta")
-    /* Alert.prompt(
-      'Configurar IP del servidor',
-      'Ingresa la dirección IP del servidor:',
-      (ip) => {
-        if (ip) {
-          setIpAddress(ip);
-          saveUrl();
-          Alert.alert('Éxito', 'Dirección IP configurada correctamente');
-        }
-      },
-      'plain-text',
-      '',
-      '192.168.1.1'
-    );*/
     router.replace('/url');
   }; 
 
@@ -116,7 +101,7 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   mainButton: {
-    backgroundColor: '#3498db',
+    backgroundColor: '#7b1fa2',
     paddingVertical: 15,
     paddingHorizontal: 40,
     borderRadius: 30,

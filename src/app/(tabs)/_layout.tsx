@@ -1,5 +1,5 @@
 import { Tabs } from 'expo-router';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons, FontAwesome5, Ionicons } from '@expo/vector-icons';
 import { useTheme } from 'react-native-paper';
 
 export default function TabLayout() {
@@ -11,14 +11,26 @@ export default function TabLayout() {
         headerShown: false,
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: 'gray',
+        tabBarStyle: {
+          backgroundColor: colors.surface,
+          borderTopColor: colors.background,
+        },
+        tabBarLabelStyle: {
+          fontSize: 12,
+          marginBottom: 4,
+        },
       }}
     >
       <Tabs.Screen
         name="index"
         options={{
           title: 'Inicio',
-          tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="apps" size={24} color={color} />
+          tabBarIcon: ({ color, focused }) => (
+            <MaterialCommunityIcons 
+              name={focused ? "home" : "home-outline"} 
+              size={26} 
+              color={color} 
+            />
           ),
         }}
       />
@@ -27,8 +39,13 @@ export default function TabLayout() {
         name="tests"
         options={{
           title: 'Mi Test',
-          tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="account" size={24} color={color} />
+          tabBarIcon: ({ color, focused }) => (
+            <FontAwesome5 
+              name={focused ? "brain" : "brain"} 
+              size={24} 
+              color={color} 
+              solid={focused}
+            />
           ),
         }}
       />
@@ -37,8 +54,12 @@ export default function TabLayout() {
         name="config"
         options={{
           title: 'Configuración',
-          tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="account-cog" size={24} color={color} />
+          tabBarIcon: ({ color, focused }) => (
+            <Ionicons 
+              name={focused ? "settings" : "settings-outline"} 
+              size={26} 
+              color={color} 
+            />
           ),
         }}
       />
@@ -47,8 +68,12 @@ export default function TabLayout() {
         name="profile"
         options={{
           title: 'Perfil',
-          tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="account" size={24} color={color} />
+          tabBarIcon: ({ color, focused }) => (
+            <MaterialCommunityIcons 
+              name={focused ? "account" : "account-outline"} 
+              size={26} 
+              color={color} 
+            />
           ),
         }}
       />

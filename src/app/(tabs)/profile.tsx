@@ -54,7 +54,7 @@ const ProfileScreen = () => {
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       <View style={styles.header}>
         <View style={styles.avatarContainer}>
-          <Ionicons name="person-circle" size={80} color="#3498db" />
+          <Ionicons name="person-circle" size={80} color="#7b1fa2" />
         </View>
         <Text style={styles.name}>{user.nombre}</Text>
         <Text style={styles.email}>{user.correo}</Text>

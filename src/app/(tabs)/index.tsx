@@ -1,8 +1,8 @@
 import React from "react";
-import { View, StyleSheet, Image } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { Text, Button, useTheme } from "react-native-paper";
 import { Link } from "expo-router";
-
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const HomeScreen = () => {
   const theme = useTheme();
@@ -10,61 +10,84 @@ const HomeScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Image 
-          source={require('../../assets/images/game_baner.jpeg')} 
-          style={styles.logo}
+        <MaterialCommunityIcons
+          name="gamepad-variant"
+          size={64}
+          color="#4a148c"
+          style={styles.iconLogo}
         />
-        <Text style={styles.appName}>VocaPlay</Text>
+        <Text variant="displaySmall" style={styles.appName}>
+          CareerCraft
+        </Text>
+        <Text style={styles.tagline}>Forjando tu futuro profesional</Text>
       </View>
 
       <View style={styles.content}>
-        <Text style={styles.title}>Descubre tu camino profesional</Text>
-        
-        <Text style={styles.subtitle}>
-          A través de juegos interactivos que evalúan tus:
+        <Text variant="headlineMedium" style={styles.title}>
+          Descubre tu vocación
+        </Text>
+
+        <Text variant="bodyLarge" style={styles.subtitle}>
+          Con nuestra innovadora evaluación basada en:
         </Text>
 
         <View style={styles.featuresContainer}>
           <View style={styles.featureCard}>
-            <Text style={styles.featureIcon}>🎯</Text>
-            <Text style={styles.featureText}>Habilidades</Text>
+            <MaterialCommunityIcons
+              name="lightbulb-on"
+              size={32}
+              color="#4a148c"
+            />
+            <Text variant="titleSmall" style={styles.featureText}>
+              Habilidades cognitivas
+            </Text>
           </View>
-          
+
           <View style={styles.featureCard}>
-            <Text style={styles.featureIcon}>❤️</Text>
-            <Text style={styles.featureText}>Intereses</Text>
+            <MaterialCommunityIcons
+              name="heart"
+              size={32}
+              color="#4a148c"
+            />
+            <Text variant="titleSmall" style={styles.featureText}>
+              Intereses personales
+            </Text>
           </View>
-          
+
           <View style={styles.featureCard}>
-            <Text style={styles.featureIcon}>🧠</Text>
-            <Text style={styles.featureText}>Fortalezas</Text>
+            <MaterialCommunityIcons
+              name="chart-line"
+              size={32}
+              color="#4a148c"
+            />
+            <Text variant="titleSmall" style={styles.featureText}>
+              Potencial de crecimiento
+            </Text>
           </View>
         </View>
       </View>
 
       <View style={styles.footer}>
-        {
-           <Link href="/(games)/tetris" asChild>
-          <Button 
-            mode="contained" 
+        <Link href="/(games)/tetris" asChild>
+          <Button
+            mode="contained"
             style={styles.mainButton}
             contentStyle={styles.buttonContent}
             labelStyle={styles.buttonLabel}
-            theme={{ colors: { primary: 'white' } }}
+            icon="play"
           >
-            Comenzar Test
+            Comenzar Evaluación
           </Button>
         </Link>
-           
-        }
 
         <Link href="/about" asChild>
-          <Button 
-            mode="text" 
-            textColor="#6a1b9a"
+          <Button
+            mode="outlined"
             style={styles.secondaryButton}
+            icon="information"
+            textColor="#4a148c"
           >
-            ¿Cómo funciona?
+            Conoce más
           </Button>
         </Link>
       </View>
@@ -75,83 +98,83 @@ const HomeScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
-    padding: 24,
+    paddingHorizontal: 24,
+    paddingTop: 40,
+    backgroundColor: "#fff",
   },
   header: {
-    alignItems: 'center',
-    marginTop: 40,
+    alignItems: "center",
     marginBottom: 32,
   },
-  logo: {
-    width: 120,
-    height: 120,
-    marginBottom: 16,
+  iconLogo: {
+    marginBottom: 8,
   },
   appName: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#6a1b9a',
-    fontFamily: 'Roboto_700Bold',
+    fontWeight: "800",
+    color: "#4a148c",
+    marginBottom: 4,
+    fontFamily: "Roboto_700Bold",
+  },
+  tagline: {
+    fontSize: 16,
+    color: "#7b1fa2",
+    fontStyle: "italic",
   },
   content: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    color: '#6a1b9a',
-    marginBottom: 16,
-    lineHeight: 32,
+    textAlign: "center",
+    fontWeight: "bold",
+    color: "#4a148c",
+    marginBottom: 12,
+    lineHeight: 36,
   },
   subtitle: {
-    textAlign: 'center',
-    fontSize: 16,
-    color: '#555',
+    textAlign: "center",
+    color: "#616161",
     marginBottom: 32,
   },
   featuresContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginBottom: 40,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 48,
   },
   featureCard: {
-    alignItems: 'center',
-    backgroundColor: '#f3e5f5',
+    alignItems: "center",
+    backgroundColor: "#f3e5f5",
     padding: 16,
-    borderRadius: 12,
-    width: '30%',
-  },
-  featureIcon: {
-    fontSize: 28,
-    marginBottom: 8,
+    borderRadius: 16,
+    width: "30%",
+    elevation: 2,
   },
   featureText: {
-    fontSize: 14,
-    fontWeight: '500',
-    color: '#6a1b9a',
-    textAlign: 'center',
+    color: "#4a148c",
+    textAlign: "center",
+    marginTop: 8,
   },
   footer: {
-    paddingBottom: 24,
+    paddingBottom: 32,
   },
   mainButton: {
     borderRadius: 12,
-    height: 50,
-    backgroundColor: '#6a1b9a',
+    height: 52,
+    backgroundColor: "#7b1fa2",
     marginBottom: 16,
   },
   buttonContent: {
-    height: '100%',
+    height: "100%",
   },
   buttonLabel: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
+    color: "#fff",
   },
   secondaryButton: {
-    height: 50,
+    height: 52,
+    borderColor: "#7b1fa2",
+    borderWidth: 1.5,
   },
 });
 
