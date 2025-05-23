@@ -79,10 +79,22 @@ export const MemoryGame = () => {
 
   const {agregarJuego} = useJuegosStore();
 
+  function escalarScore(score: number, scoreMaximo = 25): number {
+  if (score <= 0) return 1;
+
+  const escalar = Math.round((score / scoreMaximo) * 10);
+
+  // Asegurarse de que esté entre 1 y 10
+  return Math.max(1, Math.min(10, escalar));
+}
+
+
   const onGameSessionComplete = () => {
     const totalScore = gameStats.reduce((sum, stat) => sum + stat.score, 0);
 
-    agregarJuego('memory', [ CARRERAS[5], CARRERAS[1], CARRERAS[3],], totalScore);
+    const score = escalarScore(totalScore); 
+
+    agregarJuego('memory', [ CARRERAS[5], CARRERAS[1], CARRERAS[3],], score);
 
     // Redirige a otra pantalla, por ejemplo a 'Resultados'
     router.replace("/(preguntas)/preguntas-3");

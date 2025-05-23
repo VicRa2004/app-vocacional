@@ -67,7 +67,7 @@ export default function Trivia() {
       
       console.log(score);
 
-      agregarJuego('trivia-informatica', [CARRERAS[9], CARRERAS[10], CARRERAS[11], CARRERAS[6],], score)
+      agregarJuego('trivia-informatica', [CARRERAS[9], CARRERAS[10], CARRERAS[11], CARRERAS[6],], score * 2)
       
       router.replace('/final');
     } catch (error) {

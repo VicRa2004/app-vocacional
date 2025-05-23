@@ -60,7 +60,7 @@ const Gato = () => {
         }\nEmpates: ${score.ties + (winner === "Tie" ? 1 : 0)}`
       );
 
-      agregarJuego('gato', [CARRERAS[7], CARRERAS[8], CARRERAS[9]],score.player);
+      agregarJuego('gato', [CARRERAS[7], CARRERAS[8], CARRERAS[9]],score.player * 2);
 
       router.replace('/(preguntas)/preguntas-2');
     }

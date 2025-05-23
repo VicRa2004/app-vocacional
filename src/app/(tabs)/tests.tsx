@@ -87,11 +87,11 @@ export default function Final() {
     setIsSending(true);
     setError(null);
 
-    const authService = new AuthService(url);
+    const authService = new AuthService(`${url}/api`);
 
     try {
       if (user) {
-        const res = authService.saveTest({
+        const res = await authService.saveTest({
           id: user.id,
           preguntas: resPreguntas,
           juegos: resGames,

@@ -7,7 +7,7 @@ export class AuthService {
     this.url = url;
   }
 
-  async saveTest({}: {
+  async saveTest({id, juegos, preguntas}: {
     id: number,
     preguntas: Pregunta[],
     juegos: Juego[],
@@ -17,6 +17,11 @@ export class AuthService {
       headers: {
         "Content-Type": "application/json",
       },
+      body: JSON.stringify({
+        id,
+        preguntas,
+        juegos,
+      }),
     });
 
     const data = await response.json();

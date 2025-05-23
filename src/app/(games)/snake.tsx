@@ -1,3 +1,4 @@
+// SnakeGame.tsx
 import { CARRERAS } from '@/config/carreras';
 import { useJuegosStore } from '@/store/juegos-store';
 import { router } from 'expo-router';
@@ -19,7 +20,7 @@ type SnakeGameScreenProps = {
 
 const GRID_SIZE = 20;
 const CELL_SIZE = Math.floor(Dimensions.get('window').width / GRID_SIZE);
-const SNAKE_SPEED = 160; // velocidad ajustada
+const SNAKE_SPEED = 160;
 
 const generateFood = (snake: Position[]): Position => {
   let newFood: Position;
@@ -30,6 +31,12 @@ const generateFood = (snake: Position[]): Position => {
     };
   } while (snake.some(segment => segment.x === newFood.x && segment.y === newFood.y));
   return newFood;
+};
+
+const scaleScore = (score: number): number => {
+  const maxScore = 700;
+  const scaled = Math.floor((score / maxScore) * 10);
+  return Math.max(1, Math.min(scaled, 10));
 };
 
 const SnakeGameScreen: React.FC<SnakeGameScreenProps> = ({ onGameOver }) => {
@@ -44,7 +51,8 @@ const SnakeGameScreen: React.FC<SnakeGameScreenProps> = ({ onGameOver }) => {
     if (!gameOver) {
       setGameOver(true);
       if (gameLoopRef.current) clearInterval(gameLoopRef.current);
-      onGameOver?.(score);
+      const finalScore = scaleScore(score);
+      onGameOver?.(finalScore);
     }
   };
 
@@ -59,7 +67,6 @@ const SnakeGameScreen: React.FC<SnakeGameScreenProps> = ({ onGameOver }) => {
   const moveSnake = () => {
     setSnake(prevSnake => {
       const newHead = { ...prevSnake[0] };
-
       switch (direction) {
         case 'UP': newHead.y -= 1; break;
         case 'DOWN': newHead.y += 1; break;
@@ -67,9 +74,7 @@ const SnakeGameScreen: React.FC<SnakeGameScreenProps> = ({ onGameOver }) => {
         case 'RIGHT': newHead.x += 1; break;
       }
 
-      // Verificar colisión
-      const hitWall =
-        newHead.x < 0 || newHead.x >= GRID_SIZE || newHead.y < 0 || newHead.y >= GRID_SIZE;
+      const hitWall = newHead.x < 0 || newHead.x >= GRID_SIZE || newHead.y < 0 || newHead.y >= GRID_SIZE;
       const hitSelf = prevSnake.some(segment => segment.x === newHead.x && segment.y === newHead.y);
 
       if (hitWall || hitSelf) {
@@ -83,7 +88,7 @@ const SnakeGameScreen: React.FC<SnakeGameScreenProps> = ({ onGameOver }) => {
         setFood(generateFood(newSnake));
         setScore(prev => prev + 10);
       } else {
-        newSnake.pop(); // mover
+        newSnake.pop();
       }
 
       return newSnake;
@@ -114,27 +119,14 @@ const SnakeGameScreen: React.FC<SnakeGameScreenProps> = ({ onGameOver }) => {
   }, [direction, gameOver]);
 
   useEffect(() => {
-    setFood(generateFood(snake)); // una vez al inicio
+    setFood(generateFood(snake));
   }, []);
 
   return (
     <View style={styles.container}>
       <Text style={styles.score}>Puntaje: {score}</Text>
-
       <View style={styles.grid}>
-        {/* Food */}
-        <View
-          style={[
-            styles.cell,
-            {
-              left: food.x * CELL_SIZE,
-              top: food.y * CELL_SIZE,
-              backgroundColor: 'crimson',
-            },
-          ]}
-        />
-
-        {/* Snake */}
+        <View style={[styles.cell, { left: food.x * CELL_SIZE, top: food.y * CELL_SIZE, backgroundColor: 'crimson' }]} />
         {snake.map((segment, index) => (
           <View
             key={`${segment.x}-${segment.y}-${index}`}
@@ -154,29 +146,24 @@ const SnakeGameScreen: React.FC<SnakeGameScreenProps> = ({ onGameOver }) => {
         <View style={styles.gameOverContainer}>
           <Text style={styles.gameOverText}>¡Game Over!</Text>
           <Text style={styles.gameOverScore}>Puntaje final: {score}</Text>
+          <TouchableOpacity style={styles.restartButton} onPress={resetGame}>
+            <Text style={styles.restartButtonText}>Reintentar</Text>
+          </TouchableOpacity>
         </View>
       )}
 
       <View style={styles.controls}>
-        <TouchableOpacity
-          style={styles.controlButton}
-          onPress={() => changeDirection('UP')}>
+        <TouchableOpacity style={styles.controlButton} onPress={() => changeDirection('UP')}>
           <Text style={styles.arrow}>↑</Text>
         </TouchableOpacity>
         <View style={styles.horizontalControls}>
-          <TouchableOpacity
-            style={styles.controlButton}
-            onPress={() => changeDirection('LEFT')}>
+          <TouchableOpacity style={styles.controlButton} onPress={() => changeDirection('LEFT')}>
             <Text style={styles.arrow}>←</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.controlButton}
-            onPress={() => changeDirection('DOWN')}>
+          <TouchableOpacity style={styles.controlButton} onPress={() => changeDirection('DOWN')}>
             <Text style={styles.arrow}>↓</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.controlButton}
-            onPress={() => changeDirection('RIGHT')}>
+          <TouchableOpacity style={styles.controlButton} onPress={() => changeDirection('RIGHT')}>
             <Text style={styles.arrow}>→</Text>
           </TouchableOpacity>
         </View>
@@ -186,93 +173,26 @@ const SnakeGameScreen: React.FC<SnakeGameScreenProps> = ({ onGameOver }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: 40,
-    alignItems: 'center',
-    backgroundColor: '#fafafa',
-  },
-  grid: {
-    width: CELL_SIZE * GRID_SIZE,
-    height: CELL_SIZE * GRID_SIZE,
-    backgroundColor: '#e0e0e0',
-    position: 'relative',
-    borderWidth: 2,
-    borderColor: '#9e9e9e',
-  },
-  cell: {
-    width: CELL_SIZE,
-    height: CELL_SIZE,
-    position: 'absolute',
-    borderRadius: 3,
-  },
-  score: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 12,
-    color: '#333',
-  },
-  gameOverContainer: {
-    position: 'absolute',
-    top: '40%',
-    backgroundColor: '#000000aa',
-    padding: 24,
-    borderRadius: 12,
-    alignItems: 'center',
-  },
-  gameOverText: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#fff',
-    marginBottom: 10,
-  },
-  gameOverScore: {
-    fontSize: 20,
-    color: '#eee',
-    marginBottom: 16,
-  },
-  restartButton: {
-    backgroundColor: '#4CAF50',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 8,
-  },
-  restartButtonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  controls: {
-    marginTop: 32,
-    alignItems: 'center',
-  },
-  horizontalControls: {
-    flexDirection: 'row',
-    gap: 20,
-    marginTop: 12,
-  },
-  controlButton: {
-    backgroundColor: '#ccc',
-    padding: 16,
-    borderRadius: 50,
-    width: 60,
-    height: 60,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  arrow: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
+  container: { flex: 1, paddingTop: 40, alignItems: 'center', backgroundColor: '#fafafa' },
+  grid: { width: CELL_SIZE * GRID_SIZE, height: CELL_SIZE * GRID_SIZE, backgroundColor: '#e0e0e0', position: 'relative', borderWidth: 2, borderColor: '#9e9e9e' },
+  cell: { width: CELL_SIZE, height: CELL_SIZE, position: 'absolute', borderRadius: 3 },
+  score: { fontSize: 24, fontWeight: 'bold', marginBottom: 12, color: '#333' },
+  gameOverContainer: { position: 'absolute', top: '40%', backgroundColor: '#000000aa', padding: 24, borderRadius: 12, alignItems: 'center' },
+  gameOverText: { fontSize: 28, fontWeight: 'bold', color: '#fff', marginBottom: 10 },
+  gameOverScore: { fontSize: 20, color: '#eee', marginBottom: 16 },
+  restartButton: { backgroundColor: '#4CAF50', paddingVertical: 10, paddingHorizontal: 20, borderRadius: 8 },
+  restartButtonText: { color: 'white', fontSize: 16, fontWeight: 'bold' },
+  controls: { marginTop: 32, alignItems: 'center' },
+  horizontalControls: { flexDirection: 'row', gap: 20, marginTop: 12 },
+  controlButton: { backgroundColor: '#ccc', padding: 16, borderRadius: 50, width: 60, height: 60, alignItems: 'center', justifyContent: 'center' },
+  arrow: { fontSize: 20, fontWeight: 'bold' },
 });
 
 export default function SnakeGame() {
-
-  const {agregarJuego} = useJuegosStore();
+  const { agregarJuego } = useJuegosStore();
 
   const guardarPuntaje = (score: number) => {
-    agregarJuego('snake-game', [CARRERAS[10], CARRERAS[2], CARRERAS[11],], score);
-
+    agregarJuego('snake-game', [CARRERAS[10], CARRERAS[2], CARRERAS[11]], score);
     setTimeout(() => {
       router.replace('/(preguntas)/preguntas-4');
     }, 2000);

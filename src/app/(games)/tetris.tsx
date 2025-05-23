@@ -281,9 +281,24 @@ const Tetris: React.FC = () => {
 
   const {agregarJuego} = useJuegosStore();
 
+  function normalizarScore(score: number) {
+  const minScore = 0;      // Score mínimo esperado
+  const maxScore = 2000;   // Score máximo razonable
+
+  // Escalar a 1-10
+  const scaled = Math.round((score - minScore) / (maxScore - minScore) * 9 + 1);
+
+  // Clamp entre 1 y 10
+  return Math.max(1, Math.min(10, scaled));
+}
+
+
 
   const handleGameOver = () => {
-    agregarJuego('tetris', [CARRERAS[0], CARRERAS[4], CARRERAS[6]], score);
+
+    const newScore = normalizarScore(score);
+
+    agregarJuego('tetris', [CARRERAS[0], CARRERAS[4], CARRERAS[6]], newScore);
     alert("tu puntuacion fue de " + score);
 
     // Redirigimos a preguntas 1
