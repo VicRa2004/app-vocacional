@@ -44,7 +44,7 @@ const HomeScreen = () => {
 
       <View style={styles.footer}>
         {
-           <Link href="/(preguntas)/preguntas-1" asChild>
+           <Link href="/(games)/tetris" asChild>
           <Button 
             mode="contained" 
             style={styles.mainButton}

@@ -13,7 +13,6 @@ const ListaPreguntas: React.FC<Props> = ({ preguntas }) => {
 
   const onChangeResultado = (index: number, resultado: number) => {
     const pregunta = preguntas[index];
-    console.log(pregunta, resultado);
     responderPregunta({ ...pregunta, resultado });
   };
 

@@ -28,7 +28,7 @@ const VistaPreguntas: React.FC = () => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.header}>Cuestionario de Intereses</Text>
+      <Text style={styles.header}>Cuestionario de Intereses 4</Text>
 
       <ListaPreguntas preguntas={preguntas} />
 

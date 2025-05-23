@@ -1,3 +1,6 @@
+import { CARRERAS } from '@/config/carreras';
+import { useJuegosStore } from '@/store/juegos-store';
+import { router } from 'expo-router';
 import React, { useState, useEffect, useRef } from 'react';
 import {
   View,
@@ -5,7 +8,6 @@ import {
   StyleSheet,
   Dimensions,
   TouchableOpacity,
-  Alert,
 } from 'react-native';
 
 type Position = { x: number; y: number };
@@ -152,9 +154,6 @@ const SnakeGameScreen: React.FC<SnakeGameScreenProps> = ({ onGameOver }) => {
         <View style={styles.gameOverContainer}>
           <Text style={styles.gameOverText}>¡Game Over!</Text>
           <Text style={styles.gameOverScore}>Puntaje final: {score}</Text>
-          <TouchableOpacity style={styles.restartButton} onPress={resetGame}>
-            <Text style={styles.restartButtonText}>Reiniciar</Text>
-          </TouchableOpacity>
         </View>
       )}
 
@@ -268,9 +267,15 @@ const styles = StyleSheet.create({
 });
 
 export default function SnakeGame() {
+
+  const {agregarJuego} = useJuegosStore();
+
   const guardarPuntaje = (score: number) => {
-    console.log('Guardando score:', score);
-    // Aquí puedes guardar en Firebase, AsyncStorage o API externa
+    agregarJuego('snake-game', [CARRERAS[10], CARRERAS[2], CARRERAS[11],], score);
+
+    setTimeout(() => {
+      router.replace('/(preguntas)/preguntas-4');
+    }, 2000);
   };
 
   return <SnakeGameScreen onGameOver={guardarPuntaje} />;
