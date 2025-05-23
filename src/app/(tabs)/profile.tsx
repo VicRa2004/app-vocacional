@@ -38,6 +38,14 @@ const ProfileScreen = () => {
         >
           <Text style={styles.loginButtonText}>Iniciar sesión</Text>
         </TouchableOpacity>
+
+        <TouchableOpacity 
+        style={styles.logoutButton}
+        onPress={handleLogout}
+      >
+        <Ionicons name="log-out" size={24} color="#e74c3c" />
+        <Text style={styles.logoutButtonText}>Cerrar sesión</Text>
+      </TouchableOpacity>
       </View>
     );
   }

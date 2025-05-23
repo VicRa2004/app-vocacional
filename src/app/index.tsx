@@ -9,7 +9,8 @@ export default function WelcomeScreen() {
   const { isAuthenticated, isLoading } = useAuthStore();
 
   const handleConfigPress = () => {
-    Alert.prompt(
+    console.log("se ecjecuta")
+    /* Alert.prompt(
       'Configurar IP del servidor',
       'Ingresa la dirección IP del servidor:',
       (ip) => {
@@ -22,8 +23,9 @@ export default function WelcomeScreen() {
       'plain-text',
       '',
       '192.168.1.1'
-    );
-  };
+    );*/
+    router.replace('/url');
+  }; 
 
   const handleMainButtonPress = () => {
     if (isAuthenticated) {
@@ -43,12 +45,6 @@ export default function WelcomeScreen() {
 
   return (
     <View style={styles.container}>
-      <Image 
-        source={require('@/assets/images/careercraft-logo.png')} 
-        style={styles.logo}
-        resizeMode="contain"
-      />
-      
       <Text style={styles.title}>CareerCraft</Text>
       <Text style={styles.subtitle}>Descubre tu vocación a través del juego</Text>
       

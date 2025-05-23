@@ -1,5 +1,6 @@
 import useAuthStore from '@/store/auth-store';
 import { useEffect } from 'react';
+import { useUrl } from './use-url';
 
 const useAuth = () => {
   const {
@@ -13,6 +14,8 @@ const useAuth = () => {
     clearError,
     checkAuth
   } = useAuthStore();
+
+  const { currentUrl } = useUrl();
 
   // Verificar autenticación al iniciar
   useEffect(() => {
@@ -32,7 +35,7 @@ const useAuth = () => {
     authActions: {
       login: async (email: string, password: string) => {
         try {
-          await login(email, password);
+          await login(email, password, currentUrl);
           // Forzar re-renderizado después de login exitoso
           return true;
         } catch (error) {

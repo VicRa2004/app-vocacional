@@ -3,7 +3,6 @@ import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AuthService } from '@/services/auth.service';
-import { useUrl } from '@/hooks/use-url';
 
 interface User {
   id: number;
@@ -23,7 +22,7 @@ interface AuthState {
 }
 
 interface AuthActions {
-  login: (email: string, password: string) => Promise<void>;
+  login: (email: string, password: string, currentUrl: string) => Promise<void>;
   logout: () => void;
   clearError: () => void;
   checkAuth: () => Promise<void>;
@@ -38,18 +37,20 @@ const useAuthStore = create<AuthState & AuthActions>()(
       isLoading: false,
       error: null,
 
-      login: async (email, password) => {
-        const { currentUrl } = useUrl();
+      login: async (email, password, currentUrl) => {
+
         set({ isLoading: true, error: null });
 
         const authService = new AuthService(`${currentUrl}/api/auth`);
 
         try {
-          const { token, user } = await authService.login(email, password);
+          const { token, usuario } = await authService.login(email, password);
+
+          console.log(usuario, token);
           
           set({
             token,
-            user,
+            user: usuario,
             isAuthenticated: true,
             isLoading: false,
           });

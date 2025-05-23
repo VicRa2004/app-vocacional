@@ -1,6 +1,8 @@
 import React from 'react';
-import { View, Text, TextInput, Button, ActivityIndicator, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, ActivityIndicator, StyleSheet, TouchableOpacity } from 'react-native';
 import { useUrl } from '@/hooks/use-url';
+import { Ionicons } from '@expo/vector-icons';
+import { router } from 'expo-router';
 
 const ProgramUrlController = () => {
   const {
@@ -14,10 +16,20 @@ const ProgramUrlController = () => {
     error,
   } = useUrl();
 
+  const handleGoBack = () => {
+    router.replace('/');
+  };
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Configuración de URL del Programa</Text>
-      
+      {/* Header con botón de regreso */}
+      <View style={styles.header}>
+        <TouchableOpacity onPress={handleGoBack} style={styles.backButton}>
+          <Ionicons name="arrow-back" size={24} color="#3498db" />
+        </TouchableOpacity>
+        <Text style={styles.title}>Configuración de URL</Text>
+      </View>
+
       <Text style={styles.currentUrl}>
         URL actual: {currentUrl || 'No configurada'}
       </Text>
@@ -53,23 +65,35 @@ const ProgramUrlController = () => {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     padding: 20,
+    backgroundColor: '#fff',
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  backButton: {
+    marginRight: 15,
   },
   title: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
-    marginBottom: 15,
+    color: '#2c3e50',
   },
   currentUrl: {
     marginBottom: 15,
     fontStyle: 'italic',
+    color: '#7f8c8d',
   },
   input: {
     borderWidth: 1,
-    borderColor: '#ccc',
-    padding: 10,
+    borderColor: '#ddd',
+    padding: 12,
     marginBottom: 15,
-    borderRadius: 5,
+    borderRadius: 8,
+    fontSize: 16,
   },
   inputError: {
     borderColor: 'red',
@@ -77,11 +101,13 @@ const styles = StyleSheet.create({
   errorText: {
     color: 'red',
     marginBottom: 15,
+    textAlign: 'center',
   },
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 15,
+    paddingHorizontal: 20,
   },
 });
 

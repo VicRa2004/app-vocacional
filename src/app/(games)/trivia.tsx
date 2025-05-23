@@ -69,7 +69,7 @@ export default function Trivia() {
 
       agregarJuego('trivia-informatica', [CARRERAS[9], CARRERAS[10], CARRERAS[11], CARRERAS[6],], score)
       
-      router.replace('/');
+      router.replace('/final');
     } catch (error) {
       console.error('Error al guardar el puntaje:', error);
     }

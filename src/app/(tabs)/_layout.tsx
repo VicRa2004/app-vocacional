@@ -22,6 +22,17 @@ export default function TabLayout() {
           ),
         }}
       />
+
+      <Tabs.Screen
+        name="tests"
+        options={{
+          title: 'Mi Test',
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="account" size={24} color={color} />
+          ),
+        }}
+      />
+
       <Tabs.Screen
         name="config"
         options={{

@@ -1,6 +1,6 @@
 type resLogin = {
     token: string;
-    user: {
+    usuario: {
         id: number;
         nombre: string;
         correo: string;
@@ -17,9 +17,9 @@ export class AuthService {
     this.url = url;
   }
 
-  async login(username: string, password: string) {
+  async login(email: string, password: string) {
     const response = await fetch(`${this.url}/login`, {
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ email, password }),
         headers: {
           'content-type': 'application/json'
         },
